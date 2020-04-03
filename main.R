@@ -51,12 +51,26 @@ is.subtrain <- sample.int(n = nrow(is.train), size = floor(.6*nrow(is.train)), r
 validation <- is.train[!is.subtrain]
 
 # TODO: Define 3 neural networks in keras (sequential model with 1 dense layer)
+model <- keras_model_sequential()
 
 # NN1: 10 hidden units, 1 hidden layer
+model %>%
+	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
+	layer_dense(units = 1, activation = 'sigmoid') #hidden layer
+	layer_dense(10, activation = 'softmax') #output layer
+	
 
 # NN2: 100 hidden units, 1 hidden layer
+model %>%
+	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
+	layer_dense(units = 10, activation = 'sigmoid') #hidden layer
+	layer_dense(10, activation = 'softmax') #output layer
 
 # NN3: 1000 hidden units, 1 hidden layer
+model %>%
+	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
+	layer_dense(units = 100, activation = 'sigmoid') #hidden layer
+	layer_dense(10, activation = 'softmax') #output layer
 
 # Plot log loss as fxn of num epochs (different colors for each # hidden units), use different linetype for sets (subtrain = solid, validation = dashed). Draw a point to emphasize min of each validation loss
 # These different lines must be on the same plot
