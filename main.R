@@ -48,8 +48,20 @@ is.train <- sample.int(n = nrow(X.mat), size = floor(.8*nrow(X.mat)), replace = 
 is.subtrain <- sample.int(n = nrow(is.train), size = floor(.6*nrow(is.train)), replace = F)
 
 # TODO: create validation = all data in is.train that is not in is.subtrain
+validation <- is.train[!is.subtrain]
 
+# TODO: Define 3 neural networks in keras (sequential model with 1 dense layer)
 
+# NN1: 10 hidden units, 1 hidden layer
+
+# NN2: 100 hidden units, 1 hidden layer
+
+# NN3: 1000 hidden units, 1 hidden layer
+
+# Plot log loss as fxn of num epochs (different colors for each # hidden units), use different linetype for sets (subtrain = solid, validation = dashed). Draw a point to emphasize min of each validation loss
+# These different lines must be on the same plot
+# 		Note: log loss is BinaryCrossentropy in keras
+#		Note: step size is the same as learning rate in keras
 # Plot subtrain/validation loss as fxn of num epochs, draw point to emphasize min validation loss
 weight.dt <- data.frame(do.call(rbind, stuff[2]))
 layer.i <- stuff[[4]]
@@ -59,6 +71,11 @@ ggplot()+
     x=input, y=output, fill=weight),
     data=weight.dt)
 
+# define best_epochs for each NN
 # best_epochs = epochs to minimize validation loss
 best.epochs <- 10
+
+# Retrain each NN on entire train set. Use corresponding best_epochs
+
+# Use these new learned models to compute predictions. What is the prediction accuracy? What is the accuracy of the baseline model which predicts the most frequent class in the trian labels?
 
