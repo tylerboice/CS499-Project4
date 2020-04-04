@@ -11,14 +11,16 @@ if(!require("caTools"))
 {
   install.packages("caTools")
 }
+if(!require("tensorflow"))
+{
+  install.packages("tensorflow")
+}
 
 # attach all functions provided by these packages
 library(data.table)
 library(ggplot2)
 library(caTools)
-
-# source NNetOneSplit function
-source('NNetOneSplit.R')
+library(keras)
 
 #download spam data set to local directory, if it is not present
 if(!file.exists("spam.data"))
@@ -45,7 +47,7 @@ is.train <- sample.int(n = nrow(X.mat), size = floor(.8*nrow(X.mat)), replace = 
 # create vector with size = num observations in the whole data set
 # elements are TRUE if observation is in train set, FALSE otherwise. Should be 60T-40F 
 # is.subtrain contains rows which are in the train set. All other rows not in is.subtrain are in test set
-is.subtrain <- sample.int(n = nrow(is.train), size = floor(.6*nrow(is.train)), replace = F)
+is.subtrain <- sample.int(n = length(is.train), size = floor(.6*length(is.train)), replace = F)
 
 # TODO: create validation = all data in is.train that is not in is.subtrain
 validation <- is.train[!is.subtrain]
