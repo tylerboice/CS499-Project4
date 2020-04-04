@@ -41,16 +41,16 @@ n.hidden.units <- c(ncol(X.mat), 20, 1)
 
 # Create vector with size = num observations in the whole data set
 # elements are TRUE if observation is in train set, FALSE otherwise. Should be 80T-20F
-# is.train contains rows which are in the train set. All other rows not in is.train are in the test set
-is.train <- sample.int(n = nrow(X.mat), size = floor(.8*nrow(X.mat)), replace = F)
+# is.train contains rows which are in the train set. All other rows not in is.train are in the is.test set
+is.train <- sample(1 : nrow(X.mat), .8 * nrow(X.mat), replace = F)
+is.test <- setdiff(1:nrow(X.mat), is.train)
+
 
 # create vector with size = num observations in the whole data set
 # elements are TRUE if observation is in train set, FALSE otherwise. Should be 60T-40F 
-# is.subtrain contains rows which are in the train set. All other rows not in is.subtrain are in test set
-is.subtrain <- sample.int(n = length(is.train), size = floor(.6*length(is.train)), replace = F)
-
-# TODO: create validation = all data in is.train that is not in is.subtrain
-validation <- is.train[!is.subtrain]
+# is.subtrain contains rows which are in the train set. All other rows not in is.subtrain are in validation set
+is.subtrain <- sample(1 : (length(is.train)), (.6 * length(is.train)), replace = F)
+validation <- setdiff(1:length(is.train), is.subtrain)
 
 # TODO: Define 3 neural networks in keras (sequential model with 1 dense layer)
 model <- keras_model_sequential()
@@ -63,7 +63,7 @@ model %>%
 	
 model %>% compile(
 	loss = "binary_crossentropy",
-	optimizer = 'none',
+	optimizer = "none",
 	metrics = c('accuracy'))
 	
 model %>% fit(
