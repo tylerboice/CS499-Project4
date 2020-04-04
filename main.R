@@ -36,6 +36,7 @@ y.vec <- spam.dt[[ncol(spam.dt)]]
 X.mat <- scale(X.raw)
 
 max.epochs <- 100
+test.epochs <- 1
 step.size <- 0.05
 n.hidden.units <- c(ncol(X.mat), 20, 1)
 
@@ -56,6 +57,8 @@ validation <- setdiff(1:length(is.train), is.subtrain)
 model <- keras_model_sequential()
 
 # NN1: 10 hidden units, 1 hidden layer
+NN1 <- function(test.epochs)
+{
 model %>%
 	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
 	layer_dense(units = 1, activation = 'sigmoid') %>% #hidden layer
@@ -71,8 +74,11 @@ model %>% fit(
 	epochs = 5, validation_split = 0,
 	verbose = 2
 	)
-
+}
+	
 # NN2: 100 hidden units, 1 hidden layer
+NN2 <- function(test.epochs)
+{
 model %>%
 	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
 	layer_dense(units = 10, activation = 'sigmoid') %>%#hidden layer
@@ -88,8 +94,11 @@ model %>% fit(
 	epochs = 5, validation_split = 0,
 	verbose = 2
 	)
-
+}
+	
 # NN3: 1000 hidden units, 1 hidden layer
+NN3 <- function(test.epochs)
+{
 model %>%
 	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
 	layer_dense(units = 100, activation = 'sigmoid') %>% #hidden layer
@@ -105,6 +114,7 @@ model %>% fit(
 	epochs = 5, validation_split = 0,
 	verbose = 2
 	)	
+}
 
 # Plot log loss as fxn of num epochs (different colors for each # hidden units), use different linetype for sets (subtrain = solid, validation = dashed). Draw a point to emphasize min of each validation loss
 # These different lines must be on the same plot
@@ -124,6 +134,11 @@ ggplot()+
 best.epochs <- 10
 
 # Retrain each NN on entire train set. Use corresponding best_epochs
+NN1(best.epochs)
+NN2(best.epochs)
+NN3(best.epochs)
 
 # Use these new learned models to compute predictions. What is the prediction accuracy? What is the accuracy of the baseline model which predicts the most frequent class in the trian labels?
-
+y.tab <- table(is.train)
+y.pred <- as.integer(names(y.tab[which.max(y.tab)]))
+accuracy <- mean(is.subtrain == y.pred)
