@@ -56,21 +56,53 @@ model <- keras_model_sequential()
 # NN1: 10 hidden units, 1 hidden layer
 model %>%
 	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
-	layer_dense(units = 1, activation = 'sigmoid') #hidden layer
+	layer_dense(units = 1, activation = 'sigmoid') %>% #hidden layer
 	layer_dense(10, activation = 'softmax') #output layer
 	
+model %>% compile(
+	loss = "binary_crossentropy",
+	optimizer = 'none',
+	metrics = c('accuracy'))
+	
+model %>% fit(
+	x = x.train, y = y.train,
+	epochs = 5, validation_split = 0,
+	verbose = 2
+	)
 
 # NN2: 100 hidden units, 1 hidden layer
 model %>%
 	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
-	layer_dense(units = 10, activation = 'sigmoid') #hidden layer
+	layer_dense(units = 10, activation = 'sigmoid') %>%#hidden layer
 	layer_dense(10, activation = 'softmax') #output layer
+	
+model %>% compile(
+	loss = "binary_crossentropy",
+	optimizer = 'none',
+	metrics = c('accuracy'))
+	
+model %>% fit(
+	x = x.train, y = y.train,
+	epochs = 5, validation_split = 0,
+	verbose = 2
+	)
 
 # NN3: 1000 hidden units, 1 hidden layer
 model %>%
 	layer_flatten(input_shape = ncol(X.mat)) %>% #input layer
-	layer_dense(units = 100, activation = 'sigmoid') #hidden layer
+	layer_dense(units = 100, activation = 'sigmoid') %>% #hidden layer
 	layer_dense(10, activation = 'softmax') #output layer
+	
+model %>% compile(
+	loss = "binary_crossentropy",
+	optimizer = 'none',
+	metrics = c('accuracy'))
+	
+model %>% fit(
+	x = x.train, y = y.train,
+	epochs = 5, validation_split = 0,
+	verbose = 2
+	)	
 
 # Plot log loss as fxn of num epochs (different colors for each # hidden units), use different linetype for sets (subtrain = solid, validation = dashed). Draw a point to emphasize min of each validation loss
 # These different lines must be on the same plot
